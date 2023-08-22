@@ -8,12 +8,16 @@ import pyodbc
 
 logger = logz.create_logger()
 
+s3 =  boto3.client('s3')
+server = 'curves-uat.c3nmnzcia5f7.us-east-1.rds.amazonaws.com'
+objC=s3.get_object(Bucket='curves-devenv', Key='config.txt')
+dataC = objC['Body'].read().decode('utf-8').splitlines()
+dataJson =  json.loads(dataC[0])
 
-server = 'curves-dev.c3nmnzcia5f7.us-east-1.rds.amazonaws.com'
-database = 'Curves'
+database = dataJson['database']
+username = dataJson['username']
+password = dataJson['password']
 procedure = 'usp_setNymexData'
-username = 'curves'
-password = 'b:!R1IF2Pt7o)#C:h?KvgXEp:)[8'
 conn_str = f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};UID={username};PWD={password}'
 
 
@@ -42,7 +46,7 @@ def callInsertData():
         conn = pyodbc.connect(conn_str)
         cursor = conn.cursor()
 
-        s3 =  boto3.client('s3')
+       
         obj=s3.get_object(Bucket='curves-devenv', Key='feed.csv')
 
         data = obj['Body'].read().decode('utf-8').splitlines()

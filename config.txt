@@ -1,0 +1,1 @@
+{"server" : "curves-uat.c3nmnzcia5f7.us-east-1.rds.amazonaws.com","database" : "Curves","username" : "curves","password" : "2#7Lns(Y|x+|wq-JHRA5+E&(u>xw"}
